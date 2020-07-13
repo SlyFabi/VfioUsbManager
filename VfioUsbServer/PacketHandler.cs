@@ -29,6 +29,10 @@ namespace VfioUsbServer
                 {
                     HandleGetUsbDevices();
                 }
+                else if (dataStr.StartsWith("setdi "))
+                {
+                    HandleSetDisplayInput(dataStr);
+                }
                 else if (dataStr.StartsWith("ap "))
                 {
                     HandleProfileEnable(dataStr, true);
@@ -43,6 +47,27 @@ namespace VfioUsbServer
                 Console.WriteLine("Error processing request: " + e);
                 SendResponse("err");
             }
+        }
+
+        private void HandleSetDisplayInput(string dataStr)
+        {
+            dataStr = dataStr.Substring(6);
+            var input = JsonConvert.DeserializeObject<DisplayInput>(dataStr);
+            
+            var proc = new Process 
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "ddcutil",
+                    Arguments = "-d " + input.displayNum + " setvcp 60 " + input.inputId,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                }
+            };
+            proc.Start();
+            proc.WaitForExit();
+            
+            SendResponse("ok");
         }
 
         private void HandleProfileEnable(string dataStr, bool enable)
