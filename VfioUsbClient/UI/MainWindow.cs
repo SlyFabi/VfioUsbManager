@@ -90,7 +90,17 @@ namespace VfioUsbClient
 
             if (_currentProfile != null)
             {
-                var res = Globals.Client.AttachProfile(_currentProfile);
+                bool res;
+                try
+                {
+                    res = Globals.Client.AttachProfile(_currentProfile);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show(this, "Could not connect to the server !", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 if(res)
                     MessageBox.Show(this, "OK", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 else
@@ -109,7 +119,17 @@ namespace VfioUsbClient
 
             if (_currentProfile != null)
             {
-                var res = Globals.Client.DetachProfile(_currentProfile);
+                bool res;
+                try
+                {
+                    res = Globals.Client.DetachProfile(_currentProfile);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show(this, "Could not connect to the server !", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 if (res)
                     MessageBox.Show(this, "OK", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 else
@@ -153,6 +173,9 @@ namespace VfioUsbClient
             var procs = Process.GetProcessesByName("looking-glass-host");
             if (procs.Length > 0)
             {
+                if(Settings.Default.changeInputLG)
+                    SwitchDisplayInput(false);
+
                 foreach (var proc in procs)
                 {
                     proc.Kill();
@@ -162,6 +185,9 @@ namespace VfioUsbClient
             }
             else
             {
+                if (Settings.Default.changeInputLG)
+                    SwitchDisplayInput(true);
+
                 if (!File.Exists(Settings.Default.lgPath))
                 {
                     MessageBox.Show(this, "Please set the correct looking glass exe path !", "Error",
@@ -175,6 +201,29 @@ namespace VfioUsbClient
                 proc.StartInfo.Verb = "runas";
                 proc.Start();
                 toggleLookingGlassToolStripMenuItem.Text = "Stop Looking Glass";
+            }
+        }
+
+        private void SwitchDisplayInput(bool toLinux)
+        {
+            var input = new DisplayInput();
+            input.displayNum = Settings.Default.displayId;
+
+            if(toLinux)
+                input.inputId = Settings.Default.linuxInputId;
+            else
+                input.inputId = Settings.Default.vmInputId;
+
+            try
+            {
+                var res = Globals.Client.SwitchDisplayInput(input);
+                if (!res)
+                    throw new Exception();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(this, "Could not switch display input !", "Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
     }

@@ -30,18 +30,19 @@ namespace VfioUsbClient
         public bool AttachProfile(Profile profile)
         {
             var cmd = "ap " + GetProfileString(profile);
-            return Send(cmd) != "err";
+            return Send(cmd) == "ok";
         }
 
         public bool DetachProfile(Profile profile)
         {
             var cmd = "dp " + GetProfileString(profile);
-            return Send(cmd) != "err";
+            return Send(cmd) == "ok";
         }
 
-        private string GetProfileString(Profile profile)
+        public bool SwitchDisplayInput(DisplayInput input)
         {
-            return JsonConvert.SerializeObject(profile.Devices);
+            var cmd = "setdi " + JsonConvert.SerializeObject(input);
+            return Send(cmd) == "ok";
         }
 
         public List<UsbDevice> GetUsbDevices()
@@ -49,6 +50,11 @@ namespace VfioUsbClient
             var resp = Send("getusb");
             var devices = JsonConvert.DeserializeObject<List<UsbDevice>>(resp);
             return devices;
+        }
+
+        private string GetProfileString(Profile profile)
+        {
+            return JsonConvert.SerializeObject(profile.Devices);
         }
 
         private string Send(string data)

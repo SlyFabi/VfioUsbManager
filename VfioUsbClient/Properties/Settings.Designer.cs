@@ -70,5 +70,53 @@ namespace VfioUsbClient.Properties {
                 this["lgPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool changeInputLG {
+            get {
+                return ((bool)(this["changeInputLG"]));
+            }
+            set {
+                this["changeInputLG"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int vmInputId {
+            get {
+                return ((int)(this["vmInputId"]));
+            }
+            set {
+                this["vmInputId"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int linuxInputId {
+            get {
+                return ((int)(this["linuxInputId"]));
+            }
+            set {
+                this["linuxInputId"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int displayId {
+            get {
+                return ((int)(this["displayId"]));
+            }
+            set {
+                this["displayId"] = value;
+            }
+        }
     }
 }
