@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
+    <Compile Include="DisplayInput.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="UI\AboutForm.cs">
       <SubType>Form</SubType>
