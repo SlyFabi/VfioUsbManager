@@ -3,10 +3,11 @@ Allows you to attach/detach USB Devices directly from your Windows VM with Profi
 
 # Setup
 ## Building
-You need mono for building this project.
+You need the following dependencies:
+> mono, nuget
 
 On Linux run:
-> xbuild /p:Configuration=Release VfioUsbManager.sln 
+> ./build.sh
 
 On Windows open VfioUsbManager.sln in Visual Studio and build it from there.
 
